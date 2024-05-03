@@ -1,0 +1,13 @@
+## admins page
+ < Find Driver for the client
+ * list of all drivers
+ * single driver info and history page
+ * list of online drivers and there location
+ * list payed and unpayed drivers page
+
+
+##
+add img
+client cancel or driver cancel
+sound repiting
+client manegmant

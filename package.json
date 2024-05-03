@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@capacitor/geolocation": "^5.0.7",
+    "babel": "^6.23.0",
+    "bcryptjs": "^2.4.3",
+    "bootstrap-icons": "^1.11.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.2",
+    "next": "^14.1.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.1.1"
+    "react-icons": "^5.0.1"
   },
   "devDependencies": {
     "eslint": "^8",

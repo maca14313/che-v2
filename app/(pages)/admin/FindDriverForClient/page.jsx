@@ -1,4 +1,6 @@
-'use client'
+"use client"
+
+
 import { cancelsearch, checkdriveracceptance, checkmessagesfromdriver, checktogetherfromclient, cleardrivermessages, regclientdata, resetdriveracceptance, resetride, sendmessagefromclient, sendpassengerlocation } from '@/app/lib/dbClient'
 import { useEffect, useState, useRef } from 'react'
 import { Geolocation } from '@capacitor/geolocation'
@@ -17,10 +19,8 @@ import { BsBarChartFill } from "react-icons/bs";
 
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-
-import Footer from './comp/Footer/page';
-import NavBar from './comp/NavBar/page';
-import { resetdriverlocupdate } from './lib/dbAdmin';
+import NavBar from '@/app/comp/NavBar/page';
+import { resetdriverlocupdate } from '@/app/lib/dbAdmin';
 
 
 
@@ -35,7 +35,8 @@ import { resetdriverlocupdate } from './lib/dbAdmin';
 
 
 
-function HomePage() {
+
+function FindDriverForClient() {
 
   
   const [driverWithClient,setDriverWithClient]=useState('')
@@ -46,6 +47,7 @@ function HomePage() {
   const [from,setFrom]=useState('')
   const [goTo,setGoTo]=useState('')
   const [price,setPrice]=useState('')
+
 
   const [canceledDriverId,setCanceledDriverId]=useState('')
   //const [driverGrandFatherName,setDriverGrandFatherName]=useState(JSON.parse(localStorage.getItem('driverGrandFatherName')))
@@ -83,7 +85,8 @@ function HomePage() {
   const [locGeoLat, setLocGeoLat] = useState([]);
   const [locGeoLon, setLocGeoLon] = useState([]);
 
-
+  const [clientLat,setClientLat]=useState('')
+  const [clientLong,setClientLong]=useState('')
 
 
   
@@ -126,6 +129,10 @@ function HomePage() {
   setDriverInfo(localStorage.getItem('logedDriverData')!="undefined" && localStorage.getItem('logedDriverData')!=null?JSON.parse(localStorage.getItem('logedDriverData')):'')
   setClosest(JSON.parse(localStorage.getItem('driverData')))
   setCheckDriverAcceptance(localStorage.getItem('checkDriverAcceptance')!='undefined' && localStorage.getItem('checkDriverAcceptance')!=null?JSON.parse(localStorage.getItem('checkDriverAcceptance')):[]);
+
+  setClientLat(localStorage.getItem('clientLat')!='undefined' && localStorage.getItem('clientLat')!=null?JSON.parse(localStorage.getItem('clientLat')):'')
+  setClientLong(localStorage.getItem('clientLong')!='undefined' && localStorage.getItem('clientLong')!=null?JSON.parse(localStorage.getItem('clientLong')):'')
+  
  }, []);
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -246,6 +253,7 @@ useEffect(() => {
         localStorage.setItem('unacceptance2',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(2)
+       // setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
 
         break;
@@ -253,48 +261,56 @@ useEffect(() => {
         localStorage.setItem('unacceptance3',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(3)
+        //setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('unacceptance4')):
         localStorage.setItem('unacceptance4',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(4)
+        //setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('unacceptance5')):
         localStorage.setItem('unacceptance5',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(5)
+       // setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('unacceptance6')):
         localStorage.setItem('unacceptance6',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(6)
+        //setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('unacceptance7')):
         localStorage.setItem('unacceptance7',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(7)
+        //setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('unacceptance8')):
         localStorage.setItem('unacceptance8',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(8)
+       // setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('unacceptance9')):
         localStorage.setItem('unacceptance9',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(9)
+       // setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       case JSON.parse(localStorage.getItem('uacceptance10')):
         localStorage.setItem('unacceptance10',JSON.stringify(checkDriverAcceptance.driverId))
         localStorage.removeItem('checkDriverAcceptance')
         setAcceptanceCounter(10)
+        //setStartCheckDriverAcceptance(0)
         resetDriverAcceptance()
         break;
       default:
@@ -443,12 +459,11 @@ const setingClientInfo=async(e)=>{
   
  }
 
- 
 
  const sendPassengerLocation=async(e)=>{
-  e.preventDefault() 
   resetdriverlocupdate()
 
+  e.preventDefault() 
      if (loc?.latitude!=undefined) {
       try {
         resetAll2()
@@ -456,8 +471,8 @@ const setingClientInfo=async(e)=>{
         const passengerData={
           clientPhone:clientPhone,
           name:name,
-          latitude:loc?.latitude,
-          longitude:loc?.longitude,
+          latitude:clientLat,
+          longitude:clientLong,
           from:from?from:JSON.parse(localStorage.getItem('from')),
           goTo:goTo?goTo:JSON.parse(localStorage.getItem('goTo')),
           price:price?price:JSON.parse(localStorage.getItem('price')), 
@@ -476,7 +491,7 @@ const setingClientInfo=async(e)=>{
         console.log(passengerLocation)
        
         const searchRes =passengerLocation
-          if (searchRes?.good=='good') {
+          if (searchRes.good=='good') {
           setCanceledDriverId(searchRes.id)
           localStorage.setItem('canceledDriverId',JSON.stringify(searchRes.id))
           setSearchBtnOnOf(null)
@@ -657,8 +672,8 @@ let intervalID;
                       const passengerData= {
                         clientPhone:clientPhone,
                         name:name,
-                        latitude:loc?.latitude,
-                        longitude:loc?.longitude,
+                        latitude:JSON.parse(localStorage.getItem('clientLat'))?JSON.parse(localStorage.getItem('clientLat')):'0',
+                        longitude:JSON.parse(localStorage.getItem('clientLong'))?JSON.parse(localStorage.getItem('clientLong')):'0',
                         from:JSON.parse(localStorage.getItem('from'))?JSON.parse(localStorage.getItem('from')):'0',
                         goTo:JSON.parse(localStorage.getItem('goTo'))?JSON.parse(localStorage.getItem('goTo')):'0',
                         price:JSON.parse(localStorage.getItem('price'))?JSON.parse(localStorage.getItem('price')):'0',
@@ -698,6 +713,16 @@ let intervalID;
                     }, 30000);
             
                     return () => clearTimeout(noResponse2.current);
+        
+                   
+                    
+                   
+        
+                
+              
+              
+                     
+               
         
                   }else{
                     console.log('delay0')
@@ -743,7 +768,6 @@ let intervalID;
                }
 
 //////////////////////////////////// message ///////////////////////////////////////////JSON.parse(localStorage.getItem('message1'))
-
 const [message1,setMessage1]=useState('')
 const [message2,setMessage2]=useState('')
 const [message3,setMessage3]=useState('')
@@ -756,7 +780,7 @@ const [message9,setMessage9]=useState('')
 const [message10,setMessage10]=useState('')
 
 useEffect(() => {
-  setMessage1(localStorage.getItem('message1')!='undefined' && localStorage.getItem('message1')!=null?JSON.parse(localStorage.getItem('message1')):'')
+setMessage1(localStorage.getItem('message1')!='undefined' && localStorage.getItem('message1')!=null?JSON.parse(localStorage.getItem('message1')):'')
 setMessage2(localStorage.getItem('message2')!='undefined' && localStorage.getItem('message2')!=null?JSON.parse(localStorage.getItem('message2')):'')
 setMessage3(localStorage.getItem('message3')!='undefined' && localStorage.getItem('message3')!=null?JSON.parse(localStorage.getItem('message3')):'')
 setMessage4(localStorage.getItem('message4')!='undefined' && localStorage.getItem('message4')!=null?JSON.parse(localStorage.getItem('message4')):'')
@@ -1058,9 +1082,12 @@ let together;
     
  },[checkDriverAcceptance,withDriver,message10,message1,message2,message3,message4,message5,message6,message7,message8,message9])
 
+const [clientLoc,setClientLoc]=useState(`https://maps.google.com/maps?q=${clientLat},${clientLong}&t=&z=15&ie=UTF8&iwloc=&output=embed`)
+useEffect(() => {
 
- var chy2=`https://maps.google.com/maps?q=${loc2?.latitude},${loc2?.longitude}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  setClientLoc(`https://maps.google.com/maps?q=${clientLat},${clientLong}&t=&z=15&ie=UTF8&iwloc=&output=embed`)
 
+}, [clientLat,clientLong]);
 
  useEffect(() => {
   const getData=async()=>{
@@ -1083,13 +1110,16 @@ let together;
   
  }, []);
 
- console.log(noDriver)
-const [navI,setNavI]=useState()
+ const [navI,setNavI]=useState()
 useEffect(() => {
   
   setNavI(navigator.onLine)
 }, []);
 
+ console.log(driverInfo)
+
+
+console.log(clientLat)
   return (
      <div className="homepage">
      <NavBar/>
@@ -1097,7 +1127,7 @@ useEffect(() => {
   <div className='homeBodyCon'>
 
   
-  {navI?<iframe className='iframeMap' width="100%"    id="gmap_canvas" src={chy2} frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" style={{marginBottom:searchBtnOnOf==1?'20%':'2%'}} ></iframe>:<div className='iframeMapNoInternet iframeMap' >No Connection</div>} 
+  {navI?<iframe className='iframeMap' width="100%"    id="gmap_canvas" src={clientLoc} frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0" style={{marginBottom:searchBtnOnOf==1?'20%':'2%'}} ></iframe>:<div className='iframeMapNoInternet iframeMap' >No Connection</div>} 
 
 
   <div style={{display:notToGether==1?'':'none'}} className="notification">
@@ -1120,7 +1150,7 @@ useEffect(() => {
          
                                                                                                    
          
-         {searchBtnOnOf==1? <div className='searchCarBtnBodyCfooter'> 
+         {searchBtnOnOf==1? <div className='searchCarBtnBodyCfooter searchCarBtnBodyFindClientCon'> 
         
          <form className='clientNumberFormTo' onSubmit={sendPassengerLocation}  style={{display:driverInfo!=''?'none':''}}>
           
@@ -1129,7 +1159,18 @@ useEffect(() => {
 
 
  
-           <input className='clientNumberFormInputTo' type="text" required placeholder='From'  onChange={(e)=>(
+             <input className='clientNumberFormInputTo' type="text" required placeholder='Latitude'   title='over load' maxlength = "100" onChange={(e)=>(
+            setClientLat(e.target.value),
+            localStorage.setItem('clientLat',JSON.stringify(e.target.value))
+
+            )}/>
+             <input className='clientNumberFormInputTo' type="text" required placeholder='Longitude' title='over load' maxlength = "100" onChange={(e)=>(
+            setClientLong(e.target.value),
+            localStorage.setItem('clientLong',JSON.stringify(e.target.value))
+
+            )}/>
+
+             <input className='clientNumberFormInputTo' type="text" required placeholder='From'  onChange={(e)=>(
             setFrom(e.target.value),
             localStorage.setItem('form',JSON.stringify(e.target.value))
 
@@ -1536,4 +1577,4 @@ useEffect(() => {
 }
 
 
-export default HomePage
+export default FindDriverForClient
