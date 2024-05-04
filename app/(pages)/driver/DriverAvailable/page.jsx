@@ -120,9 +120,9 @@ const [driverLocationavailable,setDriverLocationAvailable]=useState([])
     setPhoneNumber(JSON.parse(localStorage.getItem('logedDriverData')).phoneNumber)
     setCheckRequist(localStorage.getItem('checkRequist')!="undefined"?JSON.parse(localStorage.getItem('checkRequist')):[]);
     setWithClient(JSON.parse(localStorage.getItem('withClient')));
+    setOnlineHeadingOnOf(checkRequist?.checkClient==1?0:1);
 
-
-   }, []);
+   }, [onlineHeadingOnOf]);
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

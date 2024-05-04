@@ -81,6 +81,7 @@ const dbCreateConnection=async()=>{
 
 
       export async function regclientdata(clientPhoneNumber,clientName){
+        console.log(clientPhoneNumber,clientName,'sdrftgyhujhgfdsdfg')
         const db=await dbCreateConnection()
              try {
 

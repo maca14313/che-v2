@@ -41,7 +41,7 @@ function HomePage() {
   const [driverWithClient,setDriverWithClient]=useState('')
 
   const [clientPhone,setClientPhone]=useState('')
-  const [phone,setPhone]=useState(null)
+  const [phone,setPhone]=useState('')
   const [name,setName]=useState('')
   const [from,setFrom]=useState('')
   const [goTo,setGoTo]=useState('')
@@ -126,7 +126,10 @@ function HomePage() {
   setDriverInfo(localStorage.getItem('logedDriverData')!="undefined" && localStorage.getItem('logedDriverData')!=null?JSON.parse(localStorage.getItem('logedDriverData')):'')
   setClosest(JSON.parse(localStorage.getItem('driverData')))
   setCheckDriverAcceptance(localStorage.getItem('checkDriverAcceptance')!='undefined' && localStorage.getItem('checkDriverAcceptance')!=null?JSON.parse(localStorage.getItem('checkDriverAcceptance')):[]);
- }, []);
+
+  setSearchBtnOnOf(clientPhone!=''?'1':null);
+  setClientNumberFormOnOf(clientPhone!=''?1:0);
+ },[clientPhone]);
 
 ///////////////////////////////////////////////////////////////////////////////
  const [data, setdata] = useState([]);

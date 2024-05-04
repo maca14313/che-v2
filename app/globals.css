@@ -385,6 +385,9 @@ scrollbar-width: none;
   color: white;
 
 }
+.clientNumberFormBtn:active{
+  background-color: lightgray;
+}
 @media screen and (min-width:420px){
   clientNumberFormBtn{
       min-width: 50%;
